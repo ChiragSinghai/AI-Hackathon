@@ -12,7 +12,7 @@ client = httpx.Client(verify=False)
 llm = ChatOpenAI(
     base_url="https://genailab.tcs.in",
     model="azure_ai/genailab-maas-DeepSeek-V3-0324",
-    api_key="",
+    api_key="sk-LXltlj5p_LKYSHv01Xxsxg",
     http_client=client
 )
 
@@ -20,7 +20,7 @@ llm = ChatOpenAI(
 embedding_model = OpenAIEmbeddings(
     base_url="https://genailab.tcs.in",
     model="azure/genailab-maas-text-embedding-3-large",
-    api_key="",
+    api_key="sk-LXltlj5p_LKYSHv01Xxsxg",
     http_client=client
 )
 
@@ -59,3 +59,9 @@ def ask_question(query):
     result = qa_chain.invoke(query)
 
     return result["result"]
+
+
+def ask_question2(query):
+    """Direct LLM call for field suggestions (without vector DB retrieval)"""
+    response = llm.invoke(query)
+    return response.content

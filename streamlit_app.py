@@ -2,13 +2,16 @@ import streamlit as st
 import json
 import pandas as pd
 from datetime import datetime, timedelta
+from rag_pipeline import process_form, ask_question
 from utils import validate_field, get_suggestions, auto_fill_fields
 import time
 import os
 
+pageTitle= "AI-Powered Student Visa Application"
+
 # Page configuration
 st.set_page_config(
-    page_title="AI-Powered Student Visa Application",
+    page_title=pageTitle,
     page_icon="🎓",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -90,6 +93,15 @@ if 'submitted' not in st.session_state:
 if 'completion_metric' not in st.session_state:
     st.session_state.completion_metric = {"start_time": datetime.now(), "errors": 0}
 
+if 'pdf_processed' not in st.session_state:
+    st.session_state.pdf_processed = False
+
+if 'pdf_filename' not in st.session_state:
+    st.session_state.pdf_filename = None
+
+if 'pdf_qa_history' not in st.session_state:
+    st.session_state.pdf_qa_history = []
+
 # Header
 col1, col2, col3 = st.columns([1, 3, 1])
 with col2:
@@ -97,7 +109,7 @@ with col2:
 
 st.markdown("""
 <div class='info-box'>
-This form uses AI assistance (GPT-4 powered by OpenAI) to guide you through the application process. 
+This form uses AI assistance to guide you through the application process. 
 Get real-time suggestions, auto-fill capabilities, and instant validation.
 </div>
 """, unsafe_allow_html=True)
@@ -155,7 +167,7 @@ with st.sidebar:
     """)
 
 # Main form area
-tab1, tab2, tab3 = st.tabs(["📝 Application Form", "📤 Summary & Submit", "📊 Help & Guide"])
+tab1, tab2, tab3, tab4 = st.tabs(["📝 Application Form", "📤 Summary & Submit", "📊 Help & Guide", "📄 Upload & Ask PDF"])
 
 with tab1:
     st.markdown("### Please Fill in All Required Fields")
@@ -257,7 +269,7 @@ with tab1:
             with col2:
                 if st.button("💡 Suggest", key=f"suggest_{field_id}", help="Get AI suggestion for this field"):
                     with st.spinner("🤖 Getting AI suggestion..."):
-                        suggestion = get_suggestions(field, st.session_state.form_data)
+                        suggestion = get_suggestions(field, pageTitle)
                         if suggestion:
                             st.session_state.suggestions[field_id] = suggestion
             
@@ -421,6 +433,103 @@ with tab3:
     
     The AI learns from your inputs to provide better suggestions as you progress.
     """)
+
+
+with tab4:
+    st.markdown("### 📄 Upload Offline PDF Form & Ask Questions")
+    
+    st.markdown("""
+    <div class='info-box'>
+    Upload a government form PDF and ask AI questions about it. The form will be processed 
+    and you can query specific sections, requirements, or get clarifications.
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.divider()
+    
+    # PDF Upload Section
+    st.markdown("#### 📥 Upload PDF Form")
+    
+    uploaded_pdf = st.file_uploader(
+        "Choose a PDF file",
+        type=["pdf"],
+        key="pdf_uploader"
+    )
+    
+    if uploaded_pdf:
+        # Create uploads directory if it doesn't exist
+        if not os.path.exists("uploads"):
+            os.makedirs("uploads")
+        
+        # Save the uploaded file
+        pdf_path = f"uploads/{uploaded_pdf.name}"
+        
+        with open(pdf_path, "wb") as f:
+            f.write(uploaded_pdf.getbuffer())
+        
+        st.success(f"✅ File uploaded: {uploaded_pdf.name}")
+        st.session_state.pdf_filename = uploaded_pdf.name
+        
+        # Process the PDF
+        if not st.session_state.pdf_processed:
+            with st.spinner("🔄 Processing PDF form..."):
+                try:
+                    process_form(pdf_path)
+                    st.session_state.pdf_processed = True
+                    st.success("✅ PDF processed successfully! You can now ask questions.")
+                except Exception as e:
+                    st.error(f"❌ Error processing PDF: {str(e)}")
+        
+        st.divider()
+        
+        # Q&A Section
+        if st.session_state.pdf_processed:
+            st.markdown("#### ❓ Ask Questions About the Form")
+            
+            query = st.text_input(
+                "Enter your question about the form",
+                placeholder="e.g., What documents are required? What is the deadline?"
+            )
+            
+            if st.button("🔍 Get Answer", key="ask_pdf_btn", type="primary"):
+                if query.strip():
+                    with st.spinner("🤖 Finding answer..."):
+                        try:
+                            response = ask_question(query)
+                            
+                            # Store in history
+                            st.session_state.pdf_qa_history.append({
+                                "question": query,
+                                "answer": response
+                            })
+                            
+                            st.success("✅ Answer found!")
+                            
+                        except Exception as e:
+                            st.error(f"❌ Error getting answer: {str(e)}")
+                else:
+                    st.warning("Please enter a question")
+            
+            st.divider()
+            
+            # Display Q&A History
+            if st.session_state.pdf_qa_history:
+                st.markdown("#### 📋 Q&A History")
+                
+                for idx, item in enumerate(st.session_state.pdf_qa_history, 1):
+                    with st.expander(f"Q{idx}: {item['question'][:60]}..."):
+                        st.markdown("**Question:**")
+                        st.write(item['question'])
+                        st.markdown("**Answer:**")
+                        st.write(item['answer'])
+                
+                # Clear history button
+                if st.button("🗑️ Clear History", key="clear_history"):
+                    st.session_state.pdf_qa_history = []
+                    st.rerun()
+    
+    else:
+        st.info("👆 Upload a PDF form to get started")
 
 # Footer
 st.divider()
