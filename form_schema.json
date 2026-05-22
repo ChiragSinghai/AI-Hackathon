@@ -1,0 +1,381 @@
+{
+  "form_name": "Student Visa Application",
+  "form_description": "Complete Student Visa Application Form with AI Assistance",
+  "total_fields": 28,
+  "sections": [
+    {
+      "section_name": "PERSONAL INFORMATION",
+      "section_id": "personal_info",
+      "fields": [
+        {
+          "field_id": "full_name",
+          "label": "Full Name",
+          "type": "text",
+          "required": true,
+          "placeholder": "Enter your full name as per passport",
+          "help_text": "Enter your complete legal name exactly as it appears in your passport",
+          "validation": "min_length:3|max_length:100",
+          "auto_fill_source": "passport_number"
+        },
+        {
+          "field_id": "date_of_birth",
+          "label": "Date of Birth",
+          "type": "date",
+          "required": true,
+          "placeholder": "YYYY-MM-DD",
+          "help_text": "Your date of birth as per your ID proof",
+          "validation": "date_format:YYYY-MM-DD|age_min:16|age_max:70",
+          "auto_fill_source": null
+        },
+        {
+          "field_id": "gender",
+          "label": "Gender",
+          "type": "select",
+          "required": true,
+          "options": ["Male", "Female", "Other", "Prefer not to say"],
+          "help_text": "Select your gender",
+          "validation": "required",
+          "auto_fill_source": null
+        },
+        {
+          "field_id": "nationality",
+          "label": "Nationality",
+          "type": "select",
+          "required": true,
+          "options": ["India", "China", "Pakistan", "Bangladesh", "Nepal", "Sri Lanka", "Indonesia", "Philippines", "Vietnam", "Thailand", "Malaysia", "Singapore", "Other"],
+          "help_text": "Your country of citizenship",
+          "validation": "required",
+          "auto_fill_source": "passport_issue_country"
+        },
+        {
+          "field_id": "email",
+          "label": "Email Address",
+          "type": "email",
+          "required": true,
+          "placeholder": "your.email@example.com",
+          "help_text": "A valid email address for correspondence",
+          "validation": "email_format",
+          "auto_fill_source": null
+        }
+      ]
+    },
+    {
+      "section_name": "CONTACT DETAILS",
+      "section_id": "contact_info",
+      "fields": [
+        {
+          "field_id": "phone_number",
+          "label": "Phone Number",
+          "type": "text",
+          "required": true,
+          "placeholder": "+91-9876543210",
+          "help_text": "Include country code (e.g., +91 for India)",
+          "validation": "phone_format",
+          "auto_fill_source": null
+        },
+        {
+          "field_id": "current_address",
+          "label": "Current Address",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "House no., Street name, Colony/Area",
+          "help_text": "Your complete residential address",
+          "validation": "min_length:10|max_length:200",
+          "auto_fill_source": null
+        },
+        {
+          "field_id": "city",
+          "label": "City/Town",
+          "type": "text",
+          "required": true,
+          "placeholder": "e.g., Mumbai, Delhi, Bangalore",
+          "help_text": "City where you currently reside",
+          "validation": "min_length:2|max_length:50",
+          "auto_fill_source": null
+        },
+        {
+          "field_id": "country",
+          "label": "Country",
+          "type": "select",
+          "required": true,
+          "options": ["India", "China", "Pakistan", "Bangladesh", "Nepal", "Sri Lanka", "Indonesia", "Philippines", "Vietnam", "Thailand", "Malaysia", "Singapore", "Other"],
+          "help_text": "Your country of residence",
+          "validation": "required",
+          "auto_fill_source": "nationality"
+        }
+      ]
+    },
+    {
+      "section_name": "PASSPORT INFORMATION",
+      "section_id": "passport_info",
+      "fields": [
+        {
+          "field_id": "passport_number",
+          "label": "Passport Number",
+          "type": "text",
+          "required": true,
+          "placeholder": "A12345678",
+          "help_text": "Your passport number as shown on the document",
+          "validation": "min_length:8|max_length:20",
+          "auto_fill_source": null
+        },
+        {
+          "field_id": "passport_issue_date",
+          "label": "Passport Issue Date",
+          "type": "date",
+          "required": true,
+          "placeholder": "YYYY-MM-DD",
+          "help_text": "Date when your passport was issued",
+          "validation": "date_format:YYYY-MM-DD",
+          "auto_fill_source": null
+        },
+        {
+          "field_id": "passport_expiry_date",
+          "label": "Passport Expiry Date",
+          "type": "date",
+          "required": true,
+          "placeholder": "YYYY-MM-DD",
+          "help_text": "Date when your passport expires (must be at least 6 months from visa issue)",
+          "validation": "date_format:YYYY-MM-DD|future_date",
+          "auto_fill_source": null
+        },
+        {
+          "field_id": "passport_issue_country",
+          "label": "Passport Issuing Country",
+          "type": "select",
+          "required": true,
+          "options": ["India", "China", "Pakistan", "Bangladesh", "Nepal", "Sri Lanka", "Indonesia", "Philippines", "Vietnam", "Thailand", "Malaysia", "Singapore", "Other"],
+          "help_text": "Country that issued your passport",
+          "validation": "required",
+          "auto_fill_source": "nationality"
+        },
+        {
+          "field_id": "passport_type",
+          "label": "Passport Type",
+          "type": "select",
+          "required": true,
+          "options": ["Ordinary", "Official", "Diplomatic"],
+          "help_text": "Type of passport you hold",
+          "validation": "required",
+          "auto_fill_source": null
+        }
+      ]
+    },
+    {
+      "section_name": "EDUCATION DETAILS",
+      "section_id": "education_info",
+      "fields": [
+        {
+          "field_id": "highest_qualification",
+          "label": "Highest Qualification",
+          "type": "select",
+          "required": true,
+          "options": ["12th/High School", "Diploma", "Bachelor's Degree", "Master's Degree", "PhD", "Other"],
+          "help_text": "Your highest level of education completed",
+          "validation": "required",
+          "auto_fill_source": null
+        },
+        {
+          "field_id": "university_name",
+          "label": "University/College Name",
+          "type": "text",
+          "required": true,
+          "placeholder": "e.g., IIT Bombay, Delhi University",
+          "help_text": "Name of the institution where you studied",
+          "validation": "min_length:5|max_length:150",
+          "auto_fill_source": null
+        },
+        {
+          "field_id": "graduation_date",
+          "label": "Graduation Date",
+          "type": "date",
+          "required": true,
+          "placeholder": "YYYY-MM-DD",
+          "help_text": "Date you graduated or will graduate",
+          "validation": "date_format:YYYY-MM-DD",
+          "auto_fill_source": null
+        },
+        {
+          "field_id": "field_of_study",
+          "label": "Field of Study",
+          "type": "text",
+          "required": true,
+          "placeholder": "e.g., Computer Science, Business Administration",
+          "help_text": "Your major/specialization",
+          "validation": "min_length:3|max_length:100",
+          "auto_fill_source": null
+        }
+      ]
+    },
+    {
+      "section_name": "DESTINATION & PROGRAM",
+      "section_id": "program_info",
+      "fields": [
+        {
+          "field_id": "destination_university",
+          "label": "University Name (Destination)",
+          "type": "text",
+          "required": true,
+          "placeholder": "e.g., Stanford University, MIT",
+          "help_text": "Name of the university where you will study",
+          "validation": "min_length:5|max_length:150",
+          "auto_fill_source": null
+        },
+        {
+          "field_id": "program_start_date",
+          "label": "Program Start Date",
+          "type": "date",
+          "required": true,
+          "placeholder": "YYYY-MM-DD",
+          "help_text": "When your program begins",
+          "validation": "date_format:YYYY-MM-DD|future_date",
+          "auto_fill_source": null
+        },
+        {
+          "field_id": "program_duration",
+          "label": "Program Duration (Months)",
+          "type": "number",
+          "required": true,
+          "placeholder": "24",
+          "help_text": "Total duration of your program in months",
+          "validation": "number_range:1|120",
+          "auto_fill_source": null
+        },
+        {
+          "field_id": "course_type",
+          "label": "Course/Degree Type",
+          "type": "select",
+          "required": true,
+          "options": ["Bachelor's Degree", "Master's Degree", "PhD", "Diploma", "Certificate", "Short Course"],
+          "help_text": "Type of qualification you will pursue",
+          "validation": "required",
+          "auto_fill_source": null
+        },
+        {
+          "field_id": "course_description",
+          "label": "Course Description",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Brief description of your course/specialization",
+          "help_text": "Provide details about your program (e.g., Computer Science - AI & Machine Learning)",
+          "validation": "min_length:10|max_length:500",
+          "auto_fill_source": null
+        }
+      ]
+    },
+    {
+      "section_name": "FINANCIAL INFORMATION",
+      "section_id": "financial_info",
+      "fields": [
+        {
+          "field_id": "annual_income",
+          "label": "Annual Income (USD)",
+          "type": "number",
+          "required": true,
+          "placeholder": "50000",
+          "help_text": "Your annual income in USD (or your family's income)",
+          "validation": "number_range:0|10000000",
+          "auto_fill_source": null
+        },
+        {
+          "field_id": "savings_amount",
+          "label": "Savings Amount (USD)",
+          "type": "number",
+          "required": true,
+          "placeholder": "100000",
+          "help_text": "Total liquid savings available for education (in USD)",
+          "validation": "number_range:0|50000000",
+          "auto_fill_source": null
+        },
+        {
+          "field_id": "funds_provider",
+          "label": "Funds Provider",
+          "type": "select",
+          "required": true,
+          "options": ["Self", "Parents", "Sponsor/Other"],
+          "help_text": "Who is funding your education",
+          "validation": "required",
+          "auto_fill_source": null
+        }
+      ]
+    },
+    {
+      "section_name": "EMPLOYMENT HISTORY",
+      "section_id": "employment_info",
+      "fields": [
+        {
+          "field_id": "employment_status",
+          "label": "Current Employment Status",
+          "type": "select",
+          "required": true,
+          "options": ["Employed", "Self-employed", "Unemployed", "Student", "Not Applicable"],
+          "help_text": "Your current employment situation",
+          "validation": "required",
+          "auto_fill_source": null
+        },
+        {
+          "field_id": "job_title",
+          "label": "Job Title (if employed)",
+          "type": "text",
+          "required": false,
+          "placeholder": "e.g., Software Engineer, Manager",
+          "help_text": "Your current job title (leave blank if unemployed)",
+          "validation": "max_length:100",
+          "auto_fill_source": null
+        }
+      ]
+    },
+    {
+      "section_name": "TRAVEL HISTORY",
+      "section_id": "travel_info",
+      "fields": [
+        {
+          "field_id": "visa_rejections",
+          "label": "Previous Visa Rejections",
+          "type": "select",
+          "required": true,
+          "options": ["Yes", "No"],
+          "help_text": "Have you ever had a visa application rejected?",
+          "validation": "required",
+          "auto_fill_source": null
+        }
+      ]
+    },
+    {
+      "section_name": "ADDITIONAL INFORMATION",
+      "section_id": "additional_info",
+      "fields": [
+        {
+          "field_id": "health_insurance",
+          "label": "Health Insurance Provider",
+          "type": "text",
+          "required": false,
+          "placeholder": "e.g., International Health Insurance Co.",
+          "help_text": "Name of your health insurance provider (if applicable)",
+          "validation": "max_length:150",
+          "auto_fill_source": null
+        }
+      ]
+    }
+  ],
+  "field_dependencies": [
+    {
+      "parent_field": "nationality",
+      "child_field": "country",
+      "condition": "auto_fill",
+      "description": "Country auto-fills from Nationality"
+    },
+    {
+      "parent_field": "nationality",
+      "child_field": "passport_issue_country",
+      "condition": "auto_fill",
+      "description": "Passport Issue Country auto-fills from Nationality"
+    },
+    {
+      "parent_field": "employment_status",
+      "child_field": "job_title",
+      "condition": "visible_if:Employed|Self-employed",
+      "description": "Job Title is only required if employed"
+    }
+  ]
+}
