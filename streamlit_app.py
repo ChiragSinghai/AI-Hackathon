@@ -250,7 +250,7 @@ with tab1:
                     st.session_state.form_data[field_id] = st.selectbox(
                         f"{field['label']}{required_mark}",
                         options=[''] + field['options'],
-                        index=[''] + field['options'].index(current_value) if current_value in field['options'] else 0,
+                        index=field['options'].index(current_value) + 1 if current_value in field['options'] else 0,
                         help=field.get('help_text', ''),
                         key=f"input_{field_id}"
                     )
